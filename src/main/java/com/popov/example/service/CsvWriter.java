@@ -5,20 +5,17 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.popov.example.dto.CsvDTO;
 import lombok.Cleanup;
 import lombok.NonNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 
+@Slf4j
 @Component
 public class CsvWriter {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private CsvMapper csvMapper = new CsvMapper();
     private CsvSchema csvSchema = csvMapper
@@ -30,9 +27,9 @@ public class CsvWriter {
         try {
             @Cleanup Writer writer = new PrintWriter(new FileWriter(fileName));
             doWrite(writer, data);
-            LOGGER.debug("Successful write to .csv-file");
+            log.debug("Successful write to .csv-file");
         } catch (IOException e) {
-            LOGGER.error("Failed to write to .csv-file", e);
+            log.error("Failed to write to .csv-file", e);
             throw new RuntimeException(e);
         }
     }
